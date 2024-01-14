@@ -16,12 +16,12 @@ struct ContentView: View {
     var body: some View {
         HStack{
             Rectangle()
-                .foregroundColor(Color.black.opacity(0.3))
-                .frame(width: 100, alignment: .leadingFirstTextBaseline)
-            Spacer()
+                .foregroundColor(Color.black.opacity(0.5))
+                .frame(width: 140, alignment: .leadingFirstTextBaseline)
             VStack {
-                Text("Hello there, Here's I'll show you show you app that w")
+                Text("Hello there, Here's I'll but th")
                     .padding(10)
+                    .lineSpacing(3)
                     .foregroundColor(.black)
                     .background(RoundedCorners(color: .white, tl: 25, tr: 25, bl: 0, br: 25))
                 
