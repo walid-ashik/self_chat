@@ -18,20 +18,6 @@ struct SelfChatApp: App {
     }
 }
 
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-        .frame(width: 500, height: 500, alignment: .center)
-        .background(TransparentWindowBackground())
-    }
-}
-
 struct TransparentWindowBackground: NSViewRepresentable {
     
     func makeCoordinator() -> Coordinator {
