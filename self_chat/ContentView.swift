@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var text: String = ""
+    @State var pressedKeys: String = ""
+    
     
     var body: some View {
         HStack{
@@ -17,12 +18,15 @@ struct ContentView: View {
                 .foregroundColor(Color.black.opacity(0.5))
                 .frame(width: 140, alignment: .leadingFirstTextBaseline)
             VStack {
-                Text(text)
-                    .padding(10)
-                    .lineSpacing(3)
-                    .foregroundColor(.black)
-                    .background(RoundedCorners(color: .white, tl: 25, tr: 25, bl: 0, br: 25))
-                
+                Group {
+                    if !pressedKeys.isEmpty {
+                        Text(pressedKeys)
+                            .padding(10)
+                            .lineSpacing(3)
+                            .foregroundColor(.black)
+                            .background(RoundedCorners(color: .white, tl: 25, tr: 25, bl: 0, br: 25))
+                    }
+                }
             }
             Spacer()
         }
@@ -30,19 +34,29 @@ struct ContentView: View {
         .background(TransparentWindowBackground())
         .focusable(true)
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-                        handleKeyEvent(event)
-                        return event
-                    }
-                }
-             
+            NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                handleKeyEvent(event)
+                return nil
+            }
+        }
+        
     }
     
     private func handleKeyEvent(_ event: NSEvent) {
-            if let characters = event.characters {
-                text += characters
+        if event.keyCode == 36 { // Enter key
+            if event.modifierFlags.contains(.shift) {
+                pressedKeys += "\n"
+            } else {
+                pressedKeys = ""
+            }
+        } else if let characters = event.characters {
+            if event.keyCode == 51 { // Check if the delete key is pressed
+                pressedKeys = String(pressedKeys.dropLast())
+            } else {
+                pressedKeys += characters
             }
         }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
