@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var topLeft: CGFloat = 0
-    @State var topRight: CGFloat = 50
-    @State var bottomLeft: CGFloat = 50
-    @State var bottomRight: CGFloat = 0
+    
+    @State var text: String = ""
     
     var body: some View {
         HStack{
@@ -19,7 +17,7 @@ struct ContentView: View {
                 .foregroundColor(Color.black.opacity(0.5))
                 .frame(width: 140, alignment: .leadingFirstTextBaseline)
             VStack {
-                Text("Hello there, Here's I'll but th")
+                Text(text)
                     .padding(10)
                     .lineSpacing(3)
                     .foregroundColor(.black)
@@ -30,7 +28,21 @@ struct ContentView: View {
         }
         .frame(width: 500, height: 300)
         .background(TransparentWindowBackground())
+        .focusable(true)
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                        handleKeyEvent(event)
+                        return event
+                    }
+                }
+             
     }
+    
+    private func handleKeyEvent(_ event: NSEvent) {
+            if let characters = event.characters {
+                text += characters
+            }
+        }
 }
 
 struct ContentView_Previews: PreviewProvider {
